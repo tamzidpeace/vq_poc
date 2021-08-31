@@ -62,9 +62,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     message = "Already Scanned! Test different one.";
                   }
                 });
+                Future.delayed(
+                    Duration(
+                      seconds: 5,
+                    ), () {
+                  setState(() {
+                    message = "Scan Again!";
+                  });
+                  print(message);
+                });
               } else {
                 setState(() {
                   message = "Invalid QR Code!";
+                });
+                Future.delayed(
+                    Duration(
+                      seconds: 5,
+                    ), () {
+                  setState(() {
+                    message = "Scan Again!";
+                  });
+                  print(message);
                 });
               }
               result = "";
