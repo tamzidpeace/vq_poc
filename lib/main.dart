@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:vq_poc/test.dart';
+import 'package:vq_poc/test2.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'VQ POC'),
+      home: Test(),
+      // MyHomePage(title: 'VQ POC'),
     );
   }
 }
@@ -29,6 +33,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void showToast(msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,21 +58,22 @@ class _MyHomePageState extends State<MyHomePage> {
           if (event is RawKeyDownEvent) {
             var key = event.data.logicalKey.keyLabel;
             if (key == "Enter") {
-              int code = int.parse(result);
               bool isValid = false;
-              for (var i = 0; i <= 10; i++) {
-                if (i == code) {
+              int position = 0;
+              String code = result;
+              for (var i = 0; i < qrcode.length; i++) {
+                if (code.toLowerCase() == qrcode[i]['code']) {
                   isValid = true;
+                  position = i;
                   break;
                 }
               }
-              print(isValid);
 
               if (isValid) {
                 setState(() {
-                  if (!qrcode[code]['isScanned']) {
+                  if (!qrcode[position]['isScanned']) {
                     message = "Valid QR Code!";
-                    qrcode[code]['isScanned'] = true;
+                    qrcode[position]['isScanned'] = true;
                   } else {
                     message = "Already Scanned! Test different one.";
                   }
@@ -85,24 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   print(message);
                 });
               }
+
+              showToast(result);
               result = "";
             } else {
-              String x = key.toString();
-              if (x == "0" ||
-                  x == "1" ||
-                  x == "2" ||
-                  x == "3" ||
-                  x == "4" ||
-                  x == "5" ||
-                  x == "6" ||
-                  x == "7" ||
-                  x == "7" ||
-                  x == "8" ||
-                  x == "9") {
-                result += key.toString();
-              }
+              result += key.toString();
             }
-          } else if (event is RawKeyUpEvent) {}
+            showToast(key.toString());
+          } /* else if (event is RawKeyUpEvent) {} */
         },
         child: Container(
           width: double.infinity,
@@ -188,17 +194,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List qrcode = [
-    {"code": 0, "isScanned": false},
-    {"code": 1, "isScanned": false},
-    {"code": 2, "isScanned": false},
-    {"code": 3, "isScanned": false},
-    {"code": 4, "isScanned": false},
-    {"code": 5, "isScanned": false},
-    {"code": 6, "isScanned": false},
-    {"code": 7, "isScanned": false},
-    {"code": 8, "isScanned": false},
-    {"code": 9, "isScanned": false},
-    {"code": 10, "isScanned": false},
+    {"code": 'a', "isScanned": false},
+    {"code": 'b', "isScanned": false},
+    {"code": 'c', "isScanned": false},
+    {"code": 'd', "isScanned": false},
+    {"code": 'e', "isScanned": false},
+    {"code": 'f', "isScanned": false},
+    {"code": 'g', "isScanned": false},
+    {"code": 'h', "isScanned": false},
+    {"code": 'i', "isScanned": false},
+    {"code": 'j', "isScanned": false},
+    {"code": 'k', "isScanned": false},
   ];
 
   String result = "";
