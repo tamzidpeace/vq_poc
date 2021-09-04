@@ -65,8 +65,12 @@ class _TestState extends State<Test> {
                 alignment: Alignment.center,
                 child: RawKeyboardListener(
                   focusNode: _keyboardListenerFocus,
-                  onKey: (keyEvent) => setState(
-                      () => _keyName = keyEvent.data.logicalKey.debugName!),
+                  onKey: (keyEvent) {
+                    setState(
+                        () => _keyName = keyEvent.data.logicalKey.debugName!);
+                    //showToast(_keyName.toString());
+                    showToast(keyEvent.data.logicalKey.keyLabel.toString());
+                  },
                   child: _listenerActive
                       ? Text(
                           'Listener focused!\nPress some keys.\nkeyName = $_keyName',
@@ -84,4 +88,6 @@ class _TestState extends State<Test> {
       ),
     );
   }
+
+  showInput() {}
 }

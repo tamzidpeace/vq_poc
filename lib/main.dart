@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Test(),
-      // MyHomePage(title: 'VQ POC'),
+      home: 
+      // Test(),
+      MyHomePage(title: 'VQ POC'),
     );
   }
 }
