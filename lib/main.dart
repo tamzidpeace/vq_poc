@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vq_poc/debounce_test.dart';
 import 'package:vq_poc/enter_mode.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       home:
           // Test(),
           EnterMode(title: 'VQ POC Enter Mode'),
+          // Debounce(),
     );
   }
 }

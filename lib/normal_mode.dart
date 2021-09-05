@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,59 +32,15 @@ class _NormalModeState extends State<NormalMode> {
       body: RawKeyboardListener(
         focusNode: FocusNode(),
         autofocus: true,
-        onKey: (RawKeyEvent event) {
+        onKey: (RawKeyEvent event) async {
           if (event is RawKeyDownEvent) {
             var key = event.data.logicalKey.keyLabel;
-            if (key == "Enter") {
-              bool isValid = false;
-              int position = 0;
-              String code = result;
-              for (var i = 0; i < qrcode.length; i++) {
-                if (code.toLowerCase() == qrcode[i]['code']) {
-                  isValid = true;
-                  position = i;
-                  break;
-                }
-              }
 
-              if (isValid) {
-                setState(() {
-                  if (!qrcode[position]['isScanned']) {
-                    message = "Valid QR Code!";
-                    qrcode[position]['isScanned'] = true;
-                  } else {
-                    message = "Already Scanned! Test different one.";
-                  }
-                });
-                Future.delayed(
-                    Duration(
-                      seconds: 5,
-                    ), () {
-                  setState(() {
-                    message = "Scan Again!";
-                  });
-                  print(message);
-                });
-              } else {
-                setState(() {
-                  message = "Invalid QR Code!";
-                });
-                Future.delayed(
-                    Duration(
-                      seconds: 5,
-                    ), () {
-                  setState(() {
-                    message = "Scan Again!";
-                  });
-                  print(message);
-                });
-              }
-
-              showToast(result);
-              result = "";
-            } else {
-              result += key.toString();
-            }
+            result += key.toString();
+            EasyDebounce.debounce('debouncer1', Duration(milliseconds: 2000),
+                () {
+              operation();
+            });
             showToast(key.toString());
           } /* else if (event is RawKeyUpEvent) {} */
         },
@@ -186,4 +143,53 @@ class _NormalModeState extends State<NormalMode> {
 
   String result = "";
   String message = "Scan QR Code";
+
+  Future<void> operation() async {
+    bool isValid = false;
+    int position = 0;
+    String code = result;
+    for (var i = 0; i < qrcode.length; i++) {
+      if (code.toLowerCase() == qrcode[i]['code']) {
+        isValid = true;
+        position = i;
+        break;
+      }
+    }
+
+    if (isValid) {
+      setState(() {
+        if (!qrcode[position]['isScanned']) {
+          message = "Valid QR Code!";
+          qrcode[position]['isScanned'] = true;
+        } else {
+          message = "Already Scanned! Test different one.";
+        }
+      });
+      Future.delayed(
+          Duration(
+            seconds: 5,
+          ), () {
+        setState(() {
+          message = "Scan Again!";
+        });
+        print(message);
+      });
+    } else {
+      setState(() {
+        message = "Invalid QR Code!";
+      });
+      Future.delayed(
+          Duration(
+            seconds: 5,
+          ), () {
+        setState(() {
+          message = "Scan Again!";
+        });
+        print(message);
+      });
+    }
+
+    showToast(result);
+    result = "";
+  }
 }
