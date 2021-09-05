@@ -29,21 +29,7 @@ class _EnterModeState extends State<EnterMode> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_right),
-            tooltip: 'VQ POC Normal Mode',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NormalMode(),
-                ),
-              );
-            },
-          ),
-        ],
+        centerTitle: true,        
       ),
       body: RawKeyboardListener(
         focusNode: FocusNode(),
